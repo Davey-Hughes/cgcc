@@ -16,7 +16,7 @@ _table:
 
 _printInteger:              ; expects int to print in rax
     push    0x20            ; push space char onto the stack
-    xor     rcx, rcx
+    mov     rcx, 0x5        ; account for extra push instructions
 
 .L1:
     xor     rdx, rdx        ; clear rdx
@@ -41,13 +41,12 @@ _printChars:
     mov     rax, rcx
     mov     r8, 0x8
     mul     r8              ; mul by 8 for each char pushed on stack
-    add     rax, 0x28       ; account for extra push instructions
     mov     rdx, rax
     mov     rax, 0x1        ; syscall code for sys_write
     mov     rdi, 0x1        ; write to stdout
     lea     rsi, [rsp]      ; address of chars to write
     syscall
-    add     rdx, 0x28       ; extra push instructions
+    add     rdx, 0x30       ; extra push instructions (excluded for golfing)
     add     rsp, rdx        ; restore stack address
 
     add     r13, 0x1
