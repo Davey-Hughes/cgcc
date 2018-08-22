@@ -1,3 +1,7 @@
+/*
+ * https://codegolf.stackexchange.com/questions/86149/divisibility-test/86384#86384
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>

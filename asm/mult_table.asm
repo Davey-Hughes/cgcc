@@ -1,3 +1,5 @@
+; https://codegolf.stackexchange.com/questions/11305/print-this-multiplication-table/86593#86593
+
 section .data
     newline     db 0xa
 

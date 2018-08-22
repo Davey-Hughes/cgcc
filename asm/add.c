@@ -1,3 +1,7 @@
+/*
+ * https://codegolf.stackexchange.com/questions/84260/add-two-numbers/86453#86453
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
