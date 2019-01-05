@@ -22,23 +22,23 @@ descent_helper(int i, int n, int m, int *arr)
 
 	// recursively check for each valid direction
 	// up
-	if (i - n > 0 && arr[i] > arr[i - n]) {
+	if (i - n >= 0 && arr[i] > arr[i - n]) {
 		longest = std::max(longest, descent_helper(i - n, n, m, arr) + 1);
 	}
 
 	// down
-	if (i + n < (n * m) - 1 && arr[i] > arr[i + n]) {
+	if (i + n < (n * m) && arr[i] > arr[i + n]) {
 		longest = std::max(longest, descent_helper(i + n, n, m, arr) + 1);
-	}
-
-	// right
-	if (i % n != n - 1 && arr[i] > arr[i + 1]) {
-		longest = std::max(longest, descent_helper(i + 1, n, m, arr) + 1);
 	}
 
 	// left
 	if (i % n != 0 && arr[i] > arr[i - 1]) {
 		longest = std::max(longest, descent_helper(i - 1, n, m, arr) + 1);
+	}
+
+	// right
+	if (i % n != n - 1 && arr[i] > arr[i + 1]) {
+		longest = std::max(longest, descent_helper(i + 1, n, m, arr) + 1);
 	}
 
 	lens[i] = longest;
@@ -52,6 +52,7 @@ descent_c(int n, int m, int *arr)
 
 	for (int i = 0; i < n * m; ++i) {
 		longest = std::max(longest, descent_helper(i, n, m, arr));
+		std::cout << i << ", " << longest << std::endl;
 	}
 
 	return longest;
@@ -96,8 +97,7 @@ main(int argc, char **argv)
 		delete[] lens;
 	}
 
-	(void) steps;
-	// std::cout << steps << std::endl;
+	std::cout << steps << std::endl;
 
 	delete[] arr;
 }
