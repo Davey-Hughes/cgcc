@@ -52,7 +52,6 @@ descent_c(int n, int m, int *arr)
 
 	for (int i = 0; i < n * m; ++i) {
 		longest = std::max(longest, descent_helper(i, n, m, arr));
-		std::cout << i << ", " << longest << std::endl;
 	}
 
 	return longest;

@@ -1,27 +1,9 @@
 ; https://codegolf.stackexchange.com/questions/178326/length-of-the-longest-descent
 BITS 64
-extern printf
-
-section .data
-	format:	db "%d", 10, 0
 
 section .text
 	global	descent_asm
 
-
-	; sub	rsp, 0x8
-	; mov	rsi, [r12 + r15 * 0x4]
-	; mov	rdi, format
-	; xor	rax, rax
-	; call	printf WRT ..plt
-	; add	rsp, 0x8
-	; xor	rdi, rdi
-
-; index = r8
-; up = (r8 - r10) * 0x4
-; down = (r8 + r10) * 0x4
-; left = (r8 - 1) * 0x4
-; right = (r8 + 1) * 0x4
 helper:
 	push		r8
 	sub		rsp, 0x8
@@ -126,6 +108,11 @@ finish:
 ; n = rdi, m = rsi, arr = rdx
 ; arr[0] = [rdx], arr[1] = [rdx + 4], ...
 descent_asm:
+	push	rbx
+	push	r12
+	push	r13
+	push	r14
+	push	r15
 	push	rbp
 	mov	rbp, rsp
 
@@ -159,4 +146,9 @@ done:
 	mov	rax, r13
 	mov	rsp, rbp
 	pop	rbp
+	pop	r15
+	pop	r14
+	pop	r13
+	pop	r12
+	pop	rbx
 	ret
