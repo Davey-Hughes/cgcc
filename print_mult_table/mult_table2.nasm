@@ -55,7 +55,7 @@ _printChars:
 	mov	rsi, rsp
 	syscall
 
-_exit:					; proper exit not needed in code golf
-	mov	rax, 0x3c
-	xor	edi, edi
-	syscall
+; _exit:					; proper exit not needed in code golf
+	; mov	rax, 0x3c
+	; xor	edi, edi
+	; syscall
