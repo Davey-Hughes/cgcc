@@ -54,7 +54,7 @@ main(int argc, char **argv)
 		char *output = new char[max_len];
 
 		for (int i = 0; i < max_len; ++i) {
-			output[i] = 'x';
+			output[i] = '\0';
 		}
 
 		oreo_asm((char *) input.c_str(), output);
