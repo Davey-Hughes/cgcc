@@ -21,8 +21,7 @@ len:
 	cmp byte	[rdi + rcx], 0x0
 	jne		len
 
-	mov		r12, rcx
-	mov		rax, r12		; r12 is len
+	mov		r12, rcx		; r12 is len
 
 	mov		rcx, -0x1
 	mov		r13, 0x0		; string byte counter

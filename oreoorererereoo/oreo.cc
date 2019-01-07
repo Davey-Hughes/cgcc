@@ -17,7 +17,7 @@ oreo_c(std::string input)
 			i++;
 		} else {
 			std::cout << ' ';
-			std::cout << std::string(input.length() - 2, 'e');
+			std::cout << std::string(input.length() - 2, 'r');
 			std::cout << ' ' << std::endl;
 			i += 2;
 		}
@@ -58,7 +58,7 @@ main(int argc, char **argv)
 		}
 
 		oreo_asm((char *) input.c_str(), output);
-		std::cout << output << std::endl;
+		std::cout << output;
 
 		delete[] output;
 	} else {
