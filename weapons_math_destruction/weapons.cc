@@ -2,8 +2,9 @@
 
 #include <iostream>
 #include <vector>
-#include <cmath>
+#include <iomanip>
 
+#include <cmath>
 #include <cstring>
 
 extern "C" double weapons_asm(double *, long unsigned);
@@ -67,7 +68,7 @@ main(int argc, char **argv)
 		x = weapons_c(input);
 	}
 
-	std::cout << x << std::endl;
+	std::cout << std::fixed << x << std::endl;
 
 	return 0;
 }
