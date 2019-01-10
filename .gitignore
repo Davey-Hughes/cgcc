@@ -1,9 +1,10 @@
 # Ignore all
 *
 
-# Unignore all extensions and dirs
+# Unignore all extensions, dirs, makefiles
 !*.*
 !*/
+!*makefile*
 
 # Ignore .o files
 *.o

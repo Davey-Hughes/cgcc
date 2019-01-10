@@ -14,45 +14,42 @@ weapons_asm:
 	mul		rbx
 	add		rax, rdi	; rax has address of 1 past last input
 
-	fld qword	[rdi]
+	fild dword	[rdi]
 
 	add		rdi, 0x8
 	cmp		rdi, rax
 	je		done
 
 math_loop:
-	fadd qword	[rdi]
+	fiadd dword	[rdi]
 
 	add		rdi, 0x8
 	cmp		rdi, rax
 	je		done
 
-	fsub qword	[rdi]
+	fisub dword	[rdi]
 
 	add		rdi, 0x8
 	cmp		rdi, rax
 	je		done
 
-	fmul qword	[rdi]
+	fimul dword	[rdi]
 
 	add		rdi, 0x8
 	cmp		rdi, rax
 	je		done
 
-	fdiv qword	[rdi]
+	fidiv dword	[rdi]
 
 	add		rdi, 0x8
 	cmp		rdi, rax
 	je		done
 
-	fld qword	[rdi]
-	sub		rsp, 0x8
-	fisttp qword	[rsp]
-	mov		rdx, [rsp]
+	mov		rdx, [rdi]
 	test		rdx, rdx
 	jz		exponent_zero
 
-	and		rdx, 0x0ffffffffffffffff
+	and		rdx, 0x0fffffffffffffff
 	call		pow_by_rept
 
 	mov		rdx, [rsp]
@@ -67,8 +64,6 @@ exponent_zero:
 	fld1
 
 skip_signed:
-	add		rsp, 0x8
-
 	add		rdi, 0x8
 	cmp		rdi, rax
 	je		done

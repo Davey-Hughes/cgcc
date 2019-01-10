@@ -4,33 +4,34 @@
 #include <vector>
 #include <iomanip>
 
+#include <cstdint>
 #include <cmath>
 #include <cstring>
 
-extern "C" double weapons_asm(double *, long unsigned);
+extern "C" double weapons_asm(int64_t *, long unsigned);
 
 double
-weapons_c(std::vector<double> input)
+weapons_c(std::vector<int64_t> input)
 {
 
-	double ret = input[0];
+	double ret = (double) input[0];
 
 	for (long unsigned i = 1; i < input.size(); ++i) {
 		switch (i % 5) {
 		case 1:
-			ret += input[i];
+			ret += (double) input[i];
 			break;
 		case 2:
-			ret -= input[i];
+			ret -= (double) input[i];
 			break;
 		case 3:
-			ret *= input[i];
+			ret *= (double) input[i];
 			break;
 		case 4:
-			ret /= input[i];
+			ret /= (double) input[i];
 			break;
 		case 0:
-			ret = std::pow(ret, input[i]);
+			ret = std::pow(ret, (double) input[i]);
 			break;
 		}
 	}
@@ -42,9 +43,10 @@ weapons_c(std::vector<double> input)
 int
 main(int argc, char **argv)
 {
-	double x;
+	int64_t x;
+	double out;
 	bool use_asm = false;
-	std::vector<double> input(0);
+	std::vector<int64_t> input(0);
 
 	while (std::cin >> x) {
 		input.push_back(x);
@@ -63,12 +65,12 @@ main(int argc, char **argv)
 	}
 
 	if (use_asm) {
-		x = weapons_asm(input.data(), input.size());
+		out = weapons_asm(input.data(), input.size());
 	} else {
-		x = weapons_c(input);
+		out = weapons_c(input);
 	}
 
-	std::cout << std::fixed << x << std::endl;
+	std::cout << std::fixed << out << std::endl;
 
 	return 0;
 }
