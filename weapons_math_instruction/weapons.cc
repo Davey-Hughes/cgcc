@@ -7,7 +7,7 @@
 #include <cmath>
 #include <cstring>
 
-extern "C" double weapons_asm(int *, long unsigned);
+extern "C" double weapons_asm(int *, long unsigned, double *);
 
 double
 weapons_c(std::vector<int> input)
@@ -64,7 +64,7 @@ main(int argc, char **argv)
 	}
 
 	if (use_asm) {
-		out = weapons_asm(input.data(), input.size());
+		weapons_asm(input.data(), input.size(), &out);
 	} else {
 		out = weapons_c(input);
 	}

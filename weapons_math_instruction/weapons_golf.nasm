@@ -1,4 +1,7 @@
 ; https://codegolf.stackexchange.com/questions/82773/weapons-of-math-instruction
+
+; credit to gwaugh on stack exchange for program logic
+; https://codegolf.stackexchange.com/a/178491/56718
 BITS 64
 DEFAULT REL
 
@@ -7,84 +10,64 @@ section .text
 
 ; double *input passed through rdi
 ; unsigned long length passed through rsi
-; double output passed through xmm0
+; double *output passed through rdx
 weapons_asm:
-	mov		rbx, 0x4
-	xor		rax, rax
 	mov		rcx, rsi
 
 	fild dword	[rdi]		; load first value into st0
 
 math_loop:
-	add		rax, rbx
+	add		rdi, 0x4
 	dec		rcx
 	jrcxz		done
 
-	fiadd dword	[rdi + rax]
+	fiadd dword	[rdi]		; float add
 
-	add		rax, rbx
+	add		rdi, 0x4
 	dec		rcx
 	jrcxz		done
 
-	fisub dword	[rdi + rax]
+	fisub dword	[rdi]		; float sub
 
-	add		rax, rbx
+	add		rdi, 0x4
 	dec		rcx
 	jrcxz		done
 
-	fimul dword	[rdi + rax]
+	fimul dword	[rdi]		; float multiply
 
-	add		rax, rbx
+	add		rdi, 0x4
 	dec		rcx
 	jrcxz		done
 
-	fidiv dword	[rdi + rax]
+	fidiv dword	[rdi]		; float divide
 
-	add		rax, rbx
+	add		rdi, 0x4
 	dec		rcx
 	jrcxz		done
 
-exp:
-	mov		rdx, [rdi + rax]
-	test		rdx, rdx
-	jz		exp.zero
+exp_rept:				; exponentation through repeated multiplication
+	push		rcx
+	mov 		ecx, [rdi]	; move exponent to ecx
+	fld1
+	cmp		ecx, 0x0
+	jz		exp_rept.done	; if exponent is 0, st0 will have value 1
+	pushf				; save comparison flags for later
+	jg		exp_rept.l
+	neg		ecx		; if exponent is negative, switch to positive
 
-	and		rdx, 0x0fffffff
-	jmp		pow_rept
-
-.ret:
-	mov		rdx, [rsp]
-	test		rdx, rdx
-	jns		exp.skip_neg
-
+.l:
+	fmul		st0, st1
+	loop		exp_rept.l	; loop until ecx is 0
+	popf
+	jge		exp_rept.done	; if exponent was negative, perform 1/x
 	fld1
 	fdiv
-	jmp		exp.skip_neg
-
-.zero:
-	fld1
-
-.skip_neg:
-	jmp		math_loop
-
-done:
-	sub		rsp, 0x8
-	fstp qword	[rsp]
-	movsd		xmm0, [rsp]
-	add		rsp, 0x8
-
-	ret
-
-pow_rept:
-	sub		rsp, 0x8
-	fst qword	[rsp]
-.l:
-	dec		rdx
-	test		rdx, rdx
-	jz		pow_rept.done
-	fmul qword	[rsp]
-	jmp		pow_rept.l
 
 .done:
-	add		rsp, 0x8
-	jmp		exp.ret
+	pop		rcx
+
+	jmp		math_loop	; loop again
+
+done:
+	fstp qword	[rdx]		; move result to output location
+	ret

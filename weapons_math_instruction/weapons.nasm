@@ -7,8 +7,9 @@ section .text
 
 ; double *input passed through rdi
 ; unsigned long length passed through rsi
-; double output passed through xmm0
+; double *output passed through rdx
 weapons_asm:
+	push		rdx		; save for later
 	mov		rax, rsi
 	mov		rbx, 0x4
 	mul		rbx
@@ -49,14 +50,14 @@ math_loop:
 	test		rdx, rdx
 	jz		exponent_zero
 
-	and		rdx, 0x0fffffff
+	and		rdx, 0x0fffffff	; clear sign bit
 	call		pow_by_rept
 
 	mov		rdx, [rsp]
 	test		rdx, rdx
 	jns		skip_signed
 
-	fld1
+	fld1				; perform 1/x if exponent is signed
 	fdiv
 	jmp		skip_signed
 
@@ -71,14 +72,11 @@ skip_signed:
 	jmp		math_loop
 
 done:
-	sub		rsp, 0x8
-	fstp qword	[rsp]
-	movsd		xmm0, [rsp]
-	add		rsp, 0x8
-
+	pop		rdx
+	fstp qword	[rdx]
 	ret
 
-pow_by_rept:
+pow_by_rept:				; perform exponent by repeated multiplication
 	sub		rsp, 0x8
 	fst qword	[rsp]
 pow_loop:
