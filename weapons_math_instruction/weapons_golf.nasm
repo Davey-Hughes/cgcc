@@ -9,36 +9,38 @@ section .text
 ; unsigned long length passed through rsi
 ; double output passed through xmm0
 weapons_asm:
+	mov		rbx, 0x4
 	xor		rax, rax
 	mov		rcx, rsi
+
 	fild dword	[rdi]		; load first value into st0
 
 math_loop:
-	add		rax, 0x8
+	add		rax, rbx
 	dec		rcx
 	jrcxz		done
 
 	fiadd dword	[rdi + rax]
 
-	add		rax, 0x8
+	add		rax, rbx
 	dec		rcx
 	jrcxz		done
 
 	fisub dword	[rdi + rax]
 
-	add		rax, 0x8
+	add		rax, rbx
 	dec		rcx
 	jrcxz		done
 
 	fimul dword	[rdi + rax]
 
-	add		rax, 0x8
+	add		rax, rbx
 	dec		rcx
 	jrcxz		done
 
 	fidiv dword	[rdi + rax]
 
-	add		rax, 0x8
+	add		rax, rbx
 	dec		rcx
 	jrcxz		done
 
@@ -47,7 +49,7 @@ exp:
 	test		rdx, rdx
 	jz		exp.zero
 
-	and		rdx, 0x0fffffffffffffff
+	and		rdx, 0x0fffffff
 	jmp		pow_rept
 
 .ret:

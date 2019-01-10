@@ -4,14 +4,13 @@
 #include <vector>
 #include <iomanip>
 
-#include <cstdint>
 #include <cmath>
 #include <cstring>
 
-extern "C" double weapons_asm(int64_t *, long unsigned);
+extern "C" double weapons_asm(int *, long unsigned);
 
 double
-weapons_c(std::vector<int64_t> input)
+weapons_c(std::vector<int> input)
 {
 
 	double ret = (double) input[0];
@@ -43,10 +42,10 @@ weapons_c(std::vector<int64_t> input)
 int
 main(int argc, char **argv)
 {
-	int64_t x;
+	int x;
 	double out;
 	bool use_asm = false;
-	std::vector<int64_t> input(0);
+	std::vector<int> input(0);
 
 	while (std::cin >> x) {
 		input.push_back(x);

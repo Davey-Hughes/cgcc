@@ -10,38 +10,38 @@ section .text
 ; double output passed through xmm0
 weapons_asm:
 	mov		rax, rsi
-	mov		rbx, 0x8
+	mov		rbx, 0x4
 	mul		rbx
 	add		rax, rdi	; rax has address of 1 past last input
 
 	fild dword	[rdi]
 
-	add		rdi, 0x8
+	add		rdi, 0x4
 	cmp		rdi, rax
 	je		done
 
 math_loop:
 	fiadd dword	[rdi]
 
-	add		rdi, 0x8
+	add		rdi, 0x4
 	cmp		rdi, rax
 	je		done
 
 	fisub dword	[rdi]
 
-	add		rdi, 0x8
+	add		rdi, 0x4
 	cmp		rdi, rax
 	je		done
 
 	fimul dword	[rdi]
 
-	add		rdi, 0x8
+	add		rdi, 0x4
 	cmp		rdi, rax
 	je		done
 
 	fidiv dword	[rdi]
 
-	add		rdi, 0x8
+	add		rdi, 0x4
 	cmp		rdi, rax
 	je		done
 
@@ -49,7 +49,7 @@ math_loop:
 	test		rdx, rdx
 	jz		exponent_zero
 
-	and		rdx, 0x0fffffffffffffff
+	and		rdx, 0x0fffffff
 	call		pow_by_rept
 
 	mov		rdx, [rsp]
@@ -64,7 +64,7 @@ exponent_zero:
 	fld1
 
 skip_signed:
-	add		rdi, 0x8
+	add		rdi, 0x4
 	cmp		rdi, rax
 	je		done
 
