@@ -15,12 +15,12 @@ _start:
 	mov		dl, 0x6		; length of string
 	syscall
 
-	rdrand 		bx	; using ebx and jnz makes the printing more interesting
-	test		bx, bx	; prints multiple ducks before goose
-	jnz		_start
+	; rdrand 		bx	; using ebx and jnz makes the printing more interesting
+	; test		bx, bx	; prints multiple ducks before goose
+	; jnz		_start
 
-	; rdrand		ecx		; has a 1/(2^32) chance of printing another duck
-	; jecxz		_start
+	rdrand		ecx		; has a 1/(2^32) chance of printing another duck
+	jecxz		_start
 
 	mov		al, 0x1		; (needed again since rax gets clobbered)
 	mov		esi, goose
