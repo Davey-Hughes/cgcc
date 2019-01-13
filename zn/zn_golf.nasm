@@ -7,38 +7,38 @@ section .text
 zn_asm:
 	push		0xa		; used for division
 
-	mov		ecx, edi
-	dec		ecx		; set outer counter to n - 1
+	mov		rcx, rdi
+	dec		rcx		; set outer counter to n - 1
 .l1:
 	mov byte	[rsi], 0xa
 	dec		rsi		; put newline in output
 
-	mov		ebx, edi
-	dec		ebx		; set inner counter to n - 1
+	mov		rbx, rdi
+	dec		rbx		; set inner counter to n - 1
 .l2:
-	mov		eax, ecx
-	add		eax, ebx
-	xor		edx, edx
-	div		edi		; rdx now has (i + k) % n
+	mov		rax, rcx
+	add		rax, rbx
+	xor		rdx, rdx
+	div		rdi		; rdx now has (i + k) % n
 
-	mov		eax, edx
+	mov		rax, rdx
 .l3:					; loop converts integer to string (backwards)
-	xor		edx, edx
+	xor		rdx, rdx
 	div qword	[rsp]		; divide our integer by 10
-	add		edx, 0x30	; convert to ASCII
+	add		rdx, 0x30	; convert to ASCII
 
 	mov byte	[rsi], dl
 	dec		rsi
 
-	test		eax, eax
+	test		rax, rax
 	jne		zn_asm.l3
 
-	dec		ebx		; inner loop
-	test		ebx, ebx
+	dec		rbx		; inner loop
+	test		rbx, rbx
 	jge		zn_asm.l2
 
-	dec		ecx		; outer loop
-	test		ecx, ecx
+	dec		rcx		; outer loop
+	test		rcx, rcx
 	jge		zn_asm.l1
 
 	pop		rax		; reset stack location
